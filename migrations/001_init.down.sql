@@ -1,0 +1,11 @@
+BEGIN;
+
+DROP TABLE IF EXISTS employees;
+DROP TABLE IF EXISTS attendance_periods;
+DROP TABLE IF EXISTS attendances;
+DROP TABLE IF EXISTS overtimes;
+DROP TABLE IF EXISTS reimbursements;
+DROP TABLE IF EXISTS payrolls;
+DROP TABLE IF EXISTS audit_logs;
+
+COMMIT;
