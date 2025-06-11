@@ -164,8 +164,8 @@ audit_logs
 | table_name          | TEXT          | Table affected                            |
 | record_id           | TEXT          | ID of the affected record                 |
 | action              | TEXT          | create/update/delete                      |
-| old_values          | JSONB         | Previous values (for updates)             |
-| new_values          | JSONB         | New values                                |
+| old_values          | TEXT          | Previous values (for updates)             |
+| new_values          | TEXT          | New values                                |
 | ip_address          | TEXT          | Client IP address                         |
 | user_id             | TEXT          | Username of the user                      |
 | user_fullname       | TEXT          | Full name of the user                     |
@@ -242,17 +242,20 @@ Payslip Summary (Admin)
 
 CLI COMMANDS
 
+  ```bash
 go run main.go db up          -> Migrates database
 go run main.go db down        -> Rollback Migrates database
 go run main.go seed employees -> Seeds 100 test employees
 go run main.go                -> Starts Fiber server
+```
 
 ENVIRONMENT CONFIGURATION (.env)
 
+  ```bash
 DB_DSN=postgres://postgres:yourpassword@localhost:5432/dbpayroll?sslmode=disable
 PORT=3000
 JWT_SECRET=rahasia_jwt_ku
-
+```
 
 FEATURES
 
