@@ -14,7 +14,7 @@ TECHNOLOGY STACK:
 - Database Migration: golang-migrate/migrate
 
 DIRECTORY STRUCTURE (Monolithic)
-
+  ```bash
 payroll-system/
 ├── main.go
 ├── go.mod
@@ -77,6 +77,7 @@ payroll-system/
 │   ├── 001_init.down.sql
 │   └── 001_init.up.sql
 └── README.md
+```
 
 DATABASE TABLES
 
@@ -186,6 +187,7 @@ RequestIDMiddleware
 
 JWT CLAIMS STRUCTURE
 
+  ```bash
 {
   "employee_id": "7cb0a1d0-f03d-4748-bc3f-5e6b41e4f4f9",
   "username": "employee1",
@@ -193,6 +195,7 @@ JWT CLAIMS STRUCTURE
   "role": "employee",
   "exp": 1719812345
 }
+```
 
 ENDPOINTS
 
@@ -250,12 +253,6 @@ DB_DSN=postgres://postgres:yourpassword@localhost:5432/dbpayroll?sslmode=disable
 PORT=3000
 JWT_SECRET=rahasia_jwt_ku
 
-TESTING
-
-Integration Testing using:
-- Go testing package
-- testify (assert, require)
-- sqlmock
 
 FEATURES
 
