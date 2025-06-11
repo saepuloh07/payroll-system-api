@@ -38,8 +38,8 @@ func NewOvertimeService(opts *OvertimeServiceOpts) OvertimeService {
 func (s *OvertimeServiceModule) SubmitOvertime(ctx context.Context, overtime *models.Overtime, username, ipAddress string) error {
 	now := time.Now()
 
-	workHourStart := time.Date(now.Year(), now.Month(), now.Day(), 9, 0, 0, 0, now.Location())
-	workHourEnd := time.Date(now.Year(), now.Month(), now.Day(), 17, 0, 0, 0, now.Location())
+	workHourStart := time.Date(overtime.Date.Year(), overtime.Date.Month(), overtime.Date.Day(), 9, 0, 0, 0, now.Location())
+	workHourEnd := time.Date(overtime.Date.Year(), overtime.Date.Month(), overtime.Date.Day(), 17, 0, 0, 0, now.Location())
 
 	if overtime.Date.Before(workHourStart) || overtime.Date.Equal(workHourEnd) {
 		return errors.New("overtime can only be submitted after working hours (after 17:00)")

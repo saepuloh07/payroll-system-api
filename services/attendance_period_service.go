@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"payroll-system/models"
 	"payroll-system/repositories"
 	"payroll-system/utils"
@@ -34,6 +35,15 @@ func NewAttendancePeriodService(opts *AttendancePeriodServiceOpts) AttendancePer
 }
 
 func (s *AttendancePeriodServiceModule) CreateAttendancePeriod(ctx context.Context, period *models.AttendancePeriod, employeeID uuid.UUID, username, ipAddress string) error {
+	checkAvailStartEndDate, err := s.attendancePeriodRepo.CheckAvailableStartAndEndDate(ctx, period.StartDate, period.EndDate)
+	if err != nil {
+		return err
+	}
+
+	if checkAvailStartEndDate {
+		return errors.New("start or end date already exists")
+	}
+
 	period.ID = uuid.New()
 	period.CreatedAt = time.Now()
 	period.UpdatedAt = time.Now()

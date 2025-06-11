@@ -3,8 +3,11 @@ package repositories
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"payroll-system/models"
+	"time"
 
+	"github.com/gofiber/fiber/v2/log"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 )
@@ -12,6 +15,7 @@ import (
 type AttendancePeriodRepository interface {
 	CreatePeriod(ctx context.Context, tx *sql.Tx, period *models.AttendancePeriod) error
 	GetAttendancePeriodByAttendancePeriodID(ctx context.Context, periodID uuid.UUID) (*models.AttendancePeriod, error)
+	CheckAvailableStartAndEndDate(ctx context.Context, startDate, endDate time.Time) (bool, error)
 }
 
 type AttendancePeriodRepositoryModule struct {
@@ -52,4 +56,17 @@ func (r *AttendancePeriodRepositoryModule) GetAttendancePeriodByAttendancePeriod
 		return nil, err
 	}
 	return &emp, nil
+}
+
+func (r *AttendancePeriodRepositoryModule) CheckAvailableStartAndEndDate(ctx context.Context, startDate, endDate time.Time) (bool, error) {
+	var emp models.AttendancePeriod
+	err := r.db.GetContext(ctx, &emp, "SELECT * FROM attendance_periods WHERE ($1 >= start_date AND $1 <= end_date) OR ($2 >= start_date AND $2 <= end_date) limit 1", startDate, endDate)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return false, nil
+		}
+		log.Error(err)
+		return false, err
+	}
+	return true, nil
 }

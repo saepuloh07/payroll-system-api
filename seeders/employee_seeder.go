@@ -44,6 +44,17 @@ func getRandomName() string {
 }
 
 func SeedEmployees(db *sql.DB) {
+	var count int
+	err := db.QueryRow(`SELECT COUNT(*) FROM public.employees`).Scan(&count)
+	if err != nil {
+		return
+	}
+
+	if count > 0 {
+		fmt.Println("Seeding employees already exists")
+		return
+	}
+
 	adminUsername := "admin"
 	adminFullname := "Admin User"
 	adminPassword, _ := hashPassword("password123")
@@ -52,7 +63,7 @@ func SeedEmployees(db *sql.DB) {
 	adminUpdatedAt := time.Now()
 
 	// Insert Admin
-	_, err := db.Exec(`
+	_, err = db.Exec(`
         INSERT INTO public.employees (id, username, fullname, password, salary, role, created_at, updated_at, created_by, updated_by)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
 		uuid.New(), adminUsername, adminFullname, adminPassword, 15000000, adminRole,

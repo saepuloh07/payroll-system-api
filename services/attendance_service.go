@@ -36,7 +36,7 @@ func NewAttendanceService(opts *AttendanceServiceOpts) AttendanceService {
 
 func (s *AttendanceServiceModule) SubmitAttendance(ctx context.Context, attendance *models.Attendance, username, ipAddress string) error {
 	now := time.Now()
-	dateOnly := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+	dateOnly := time.Date(attendance.Date.Year(), attendance.Date.Month(), attendance.Date.Day(), 0, 0, 0, 0, now.Location())
 
 	// Cek apakah sudah submit hari ini
 	hasToday, err := s.attendanceRepo.HasAttendanceToday(ctx, attendance.EmployeeID, dateOnly.Format("2006-01-02"))

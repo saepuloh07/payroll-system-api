@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"payroll-system/middleware"
 	"payroll-system/models"
 	"payroll-system/services"
@@ -62,14 +61,6 @@ func (h *AttendancePeriodHandlerModule) CreatePeriod(c *fiber.Ctx) error {
 		StartDate: req.StartDate,
 		EndDate:   req.EndDate,
 	}
-
-	ipAddress := middleware.GetClientIP(c)
-	requestID := c.Locals("request_id").(uuid.UUID)
-
-	fmt.Printf("EMPLOYEE ID : %s\n", employeeID)
-	fmt.Printf("Username : %s\n", username)
-	fmt.Printf("IP ADDRESS : %s\n", ipAddress)
-	fmt.Printf("REQUEST ID : %s\n", requestID)
 
 	if err := h.attendancePeriodService.CreateAttendancePeriod(c.UserContext(), period, employeeID, username, middleware.GetClientIP(c)); err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": err.Error()})
